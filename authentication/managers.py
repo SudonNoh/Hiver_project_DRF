@@ -3,7 +3,7 @@ from django.contrib.auth.models import BaseUserManager
 
 class UserManager(BaseUserManager):
     
-    def create_user(self, username, email, password=None, **extra_fields):
+    def create_user(self, username, email, is_member, brand, password=None, **extra_fields):
         
         if username is None:
             raise TypeError('Users must have a username')
@@ -13,6 +13,9 @@ class UserManager(BaseUserManager):
 
         if password is None:
             raise TypeError('Users must have a password')
+        
+        if is_member == True:
+            raise TypeError('Members must set a brand')
         
         user = self.model(
             username = username,

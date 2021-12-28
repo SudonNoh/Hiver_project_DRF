@@ -15,14 +15,21 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     email = models.EmailField('Email', unique=True)
     phone_number = models.CharField('Phone Number', max_length=255, unique=True)
     is_member = models.BooleanField(default=False)
+    brand = models.ForeignKey(
+        'member.Brand', 
+        related_name='user', 
+        on_delete=models.PROTECT,
+        default='None'
+        )
     is_active = models.BooleanField(default=True)
-    # superuser인 경우에만
     is_staff = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
     
     REQUIRED_FIELD = [
-        
+        'username',
+        'email',
+        'phone_number',
     ]
     
     objects = BaseUserManager()

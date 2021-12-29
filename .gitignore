@@ -4,6 +4,7 @@
 
 ### custom
 secrets.json
+migrations/
 
 ### Django ###
 *.log

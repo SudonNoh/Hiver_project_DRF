@@ -42,8 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'django_extensions',
+    
     'rest_framework',
     'authentication',
+    'member'
 ]
 
 MIDDLEWARE = [
@@ -129,7 +132,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'authentication.User'
+
 # REST FRAMEWORK
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'EXCEPTION_HANDLER': 'core.exceptions.core_exception_handler',
+    'PAGE_SIZE': 20,
+    'NON_FIELD_ERRORS_KEY': 'error',
 }

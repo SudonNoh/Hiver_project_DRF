@@ -5,17 +5,26 @@ from core.models import TimestampedModel
 class Brand(TimestampedModel):
     
     brand = models.CharField('Brand', max_length=255, unique=True)
-    brand_address = models.CharField('Brand Address', max_length=255)
+    brand_address = models.CharField(
+        'Brand Address', 
+        max_length=255, 
+        blank=True,
+        )
     brand_type = models.CharField(
         'Brand Type', 
         max_length=255, 
         choices=[
             ('Shopping_mall', 'Shopping_mall'), 
-            ('Brand', 'Brand')
+            ('Brand', 'Brand'),
+            ('Customer', 'Customer'),
             ]
         )
-    brand_phone_number = models.CharField('Brand Phone Number', max_length=255, unique=True)
-    brand_email = models.EmailField('Brand Email')
-    brand_homepage = models.URLField('Brand Homepage')
-    brand_description = models.TextField('Brand Description')
-    brand_logo = models.ImageField('Brand Logo')
+    brand_phone_number = models.CharField(
+        'Brand Phone Number', 
+        max_length=255, 
+        unique=True
+        )
+    brand_email = models.EmailField('Brand Email', blank=True)
+    brand_homepage = models.URLField('Brand Homepage', blank=True)
+    brand_description = models.TextField('Brand Description', blank=True)
+    brand_logo = models.ImageField('Brand Logo', blank=True)

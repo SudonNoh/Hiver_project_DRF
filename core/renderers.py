@@ -10,10 +10,7 @@ class BaseJSONRenderer(JSONRenderer):
     pagination_object_count = 'count'
     
     def renders(self, data, media_type=None, renderer_context=None):
-        print(
-            'Hiver_DRF > core > renderers.py > BaseJSONRenderer > renders:  ', 
-            data.get('results', None)
-            )
+        
         if data.get('results', None) is not None:
             return json.dumps({
                 self.pagination_object_label: data['results'],

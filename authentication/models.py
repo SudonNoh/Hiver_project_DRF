@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     
     def _generate_jwt_token(self):
         
-        dt = datetime.now() + timedelta(minutes=5)
+        dt = datetime.now() + timedelta(days=30)
         
         token = jwt.encode({
             'id':self.pk,

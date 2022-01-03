@@ -4,6 +4,7 @@ from rest_framework import serializers
 from authentication.models import User
 
 
+# 회원가입
 class RegistrationSerializer(serializers.ModelSerializer):
     
     password = serializers.CharField(
@@ -25,6 +26,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
     
 
+# 로그인
 class LoginSerializer(serializers.Serializer):
     email= serializers.EmailField()
     username = serializers.CharField(max_length=255, read_only=True)
@@ -67,22 +69,34 @@ class LoginSerializer(serializers.Serializer):
         }
         
         
-# class UserSerializer(serializers.ModelSerializer):
-#     password = serializers.CharField(
-#         max_length=128,
-#         min_length=8,
-#         write_only=True
-#     )
+# User 업데이트
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True
+    )
     
-#     class Meta:
-#         model = User
-#         fields = [
-#             'username',
-#             'email',
-#             'phone_number',
-#             'is_member',
-#             'brand'
-#         ]
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'password',
+            'phone_number',
+            'is_member',
+            'brand'
+        ]
     
-#     def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
         
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+            
+        if password is not None:
+            instance.set_password(password)
+        
+        instance.save()
+        
+        return instance

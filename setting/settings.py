@@ -136,6 +136,9 @@ AUTH_USER_MODEL = 'authentication.User'
 
 # REST FRAMEWORK
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.backends.JWTAuthentication',  
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'EXCEPTION_HANDLER': 'core.exceptions.core_exception_handler',
     'PAGE_SIZE': 20,

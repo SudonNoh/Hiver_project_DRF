@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
@@ -30,6 +31,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email= serializers.EmailField()
     username = serializers.CharField(max_length=255, read_only=True)
+    last_login = serializers.CharField(max_length=255, read_only=True)
     password = serializers.CharField(
         max_length=128,
         min_length=8,
@@ -63,9 +65,13 @@ class LoginSerializer(serializers.Serializer):
                 'This user has been deactivated.'
             )
         
+        user.last_login = timezone.now()
+        user.save(update_fields=['last_login'])
+        
         return {
             'email': user.email,
             'username': user.username,
+            'last_login': user.last_login,
         }
         
         
@@ -76,6 +82,7 @@ class UserSerializer(serializers.ModelSerializer):
         min_length=8,
         write_only=True
     )
+    last_login = serializers.CharField(max_length=255, read_only=True)
     
     class Meta:
         model = User
@@ -85,7 +92,8 @@ class UserSerializer(serializers.ModelSerializer):
             'password',
             'phone_number',
             'is_member',
-            'brand'
+            'brand',
+            'last_login'
         ]
     
     def update(self, instance, validated_data):

@@ -7,6 +7,7 @@ class AdminBrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = [
+            'id',
             'brand',
             'brand_address',
             'brand_type',

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from member.models import Brand
+from brand.models import Brand
 
 
 class AdminBrandSerializer(serializers.ModelSerializer):

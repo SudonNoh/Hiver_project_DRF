@@ -4,7 +4,7 @@ from rest_framework import viewsets
 
 from .serializers import AdminBrandSerializer
 from .renderers import BrandJSONRenderer
-from member.models import Brand
+from brand.models import Brand
 from core.permissions import IsStaffOnly
 
 # Create your views here.

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from rest_framework import serializers
@@ -83,7 +84,6 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
     last_login = serializers.CharField(max_length=255, read_only=True)
-    
     class Meta:
         model = User
         fields = [
@@ -91,9 +91,9 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'password',
             'phone_number',
-            'is_member',
+            'groups'
             'brand',
-            'last_login'
+            'last_login',
         ]
     
     def update(self, instance, validated_data):

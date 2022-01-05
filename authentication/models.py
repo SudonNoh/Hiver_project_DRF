@@ -14,9 +14,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     username = models.CharField('Username', max_length=255, unique=True)
     email = models.EmailField('Email', unique=True)
     phone_number = models.CharField('Phone Number', max_length=255, unique=True)
-    is_member = models.BooleanField(default=False)
     brand = models.ForeignKey(
-        'member.Brand', 
+        'brand.Brand', 
         related_name='user', 
         on_delete=models.PROTECT,
         default=1
@@ -26,9 +25,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     
     USERNAME_FIELD = 'email'
     
-    REQUIRED_FIELD = [
+    REQUIRED_FIELDS = [
         'username',
-        'email',
         'phone_number',
     ]
     

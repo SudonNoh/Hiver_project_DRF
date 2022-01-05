@@ -1,4 +1,3 @@
-from django.contrib.auth.models import Group
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from rest_framework import serializers
@@ -6,7 +5,7 @@ from rest_framework import serializers
 from authentication.models import User
 
 
-# 회원가입
+# Register
 class RegistrationSerializer(serializers.ModelSerializer):
     
     password = serializers.CharField(
@@ -28,7 +27,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
     
 
-# 로그인
+# Login
 class LoginSerializer(serializers.Serializer):
     email= serializers.EmailField()
     username = serializers.CharField(max_length=255, read_only=True)
@@ -76,7 +75,7 @@ class LoginSerializer(serializers.Serializer):
         }
         
         
-# User 업데이트
+# User Update
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         max_length=128,

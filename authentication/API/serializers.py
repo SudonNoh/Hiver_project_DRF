@@ -90,8 +90,6 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'password',
             'phone_number',
-            'groups'
-            'brand',
             'last_login',
         ]
     

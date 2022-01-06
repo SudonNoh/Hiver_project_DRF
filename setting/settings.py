@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-import os
-import json
-from django.core.exceptions import ImproperlyConfigured
 import secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -43,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'django_extensions',
-    
     'rest_framework',
+    
+    'admin',
     'authentication',
-    'brand'
+    'brand',
 ]
 
 MIDDLEWARE = [

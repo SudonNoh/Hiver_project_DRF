@@ -9,7 +9,7 @@ from brand.models import Brand
 from core.permissions import IsSystemAdmin, IsSiteAdmin
 
 # Admin이 User의 정보를 생성, 조회, 수정, 삭제 할 수 있어야 함.
-# 따라서 모든 가능을 갖고 있는 ModelViewSet으로 설정할 예정
+# 따라서 모든 가능을 갖고 있는 ModelViewSet으로 설정할 예정입니다.
 class AdminUserViewSet(viewsets.ModelViewSet):
     
     queryset = User.objects.all()

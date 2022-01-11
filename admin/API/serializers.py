@@ -6,7 +6,6 @@ from brand.models import Brand
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
-    brand = BrandSerializer(read_only=True)
     
     class Meta:
         model = User
@@ -19,8 +18,10 @@ class AdminUserSerializer(serializers.ModelSerializer):
             'brand',
             'last_login',
             'is_active',
+            'created_at',
+            'updated_at',
         ]
-
+        depth = 1
 
 class AdminBrandSerializer(serializers.ModelSerializer):
     class Meta:

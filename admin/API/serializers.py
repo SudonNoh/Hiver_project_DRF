@@ -1,10 +1,12 @@
 from rest_framework import serializers
+from brand.API.serializers import BrandSerializer
 
 from authentication.models import User
 from brand.models import Brand
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
+    brand = BrandSerializer(read_only=True)
     
     class Meta:
         model = User
@@ -18,7 +20,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
             'last_login',
             'is_active',
         ]
-        
+
 
 class AdminBrandSerializer(serializers.ModelSerializer):
     class Meta:

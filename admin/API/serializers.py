@@ -6,6 +6,7 @@ from brand.models import Brand
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
+    brand = BrandSerializer()
     
     class Meta:
         model = User
@@ -21,7 +22,18 @@ class AdminUserSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
-        depth = 1
+        # depth = 1
+        
+    # def update(self, instance, validated_data):
+    #     print("\n\n validated_data : ", validated_data)
+    #     print("\n\n validated_data : ", validated_data['brand'])
+    #     print("\n\n instance : ", instance, "\n\n")
+        
+    #     brand = validated_data.pop('brand')
+        
+    #     instance.brand = brand.id
+    #     return instance
+
 
 class AdminBrandSerializer(serializers.ModelSerializer):
     class Meta:

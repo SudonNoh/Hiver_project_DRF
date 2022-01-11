@@ -16,6 +16,4 @@
     <pre></pre>
 </div>
 
-<div>
-    <img src="![HiverProject](https://user-images.githubusercontent.com/69226800/148867233-4c3a72c3-1f01-42e1-8507-73a102dd69e4.jpg)">
-</div>
+![HiverProject](https://user-images.githubusercontent.com/69226800/148867233-4c3a72c3-1f01-42e1-8507-73a102dd69e4.jpg)

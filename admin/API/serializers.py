@@ -15,17 +15,7 @@ class AdminGroupSerializer(serializers.ModelSerializer):
 class AdminBrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = [
-            'id',
-            'brand',
-            'brand_address',
-            'brand_type',
-            'brand_phone_number',
-            'brand_email',
-            'brand_homepage',
-            'brand_description',
-            'brand_logo'
-        ]
+        fields = "__all__"
         
         
 class AdminUserSerializer(serializers.ModelSerializer):
@@ -44,7 +34,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
 
-    
+
 class NestedAdminUserSerializer(serializers.ModelSerializer):
     brand = AdminBrandSerializer()
     groups = AdminGroupSerializer(many=True)
@@ -63,4 +53,3 @@ class NestedAdminUserSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
-    

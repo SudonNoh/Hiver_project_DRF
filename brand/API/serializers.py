@@ -4,7 +4,6 @@ from brand.models import Brand
 
 
 class BrandSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Brand
         fields = [
@@ -15,7 +14,6 @@ class BrandSerializer(serializers.ModelSerializer):
             'brand_email',
             'brand_homepage',
             'brand_description',
-            'brand_logo'
         ]
         
         read_only_fields = [
@@ -23,3 +21,13 @@ class BrandSerializer(serializers.ModelSerializer):
             'brand_type',
             'brand_phone_number'
         ]
+        
+    # def update(self, instance, validated_data):
+    #     print(instance)
+    #     print(validated_data.items())
+        
+    #     for (key, value) in validated_data.items():
+    #         setattr(instance, key, value)
+        
+    #     instance.save()
+    #     return instance

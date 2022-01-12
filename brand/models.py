@@ -27,4 +27,4 @@ class Brand(TimestampedModel):
     brand_email = models.EmailField('Brand Email', blank=True)
     brand_homepage = models.URLField('Brand Homepage', blank=True)
     brand_description = models.TextField('Brand Description', blank=True)
-    brand_logo = models.ImageField('Brand Logo', blank=True)
+    brand_logo = models.ImageField('Brand Logo', default='static/Ryan.jpeg')

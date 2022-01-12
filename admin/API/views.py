@@ -1,9 +1,11 @@
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, renderer_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from django.contrib.auth.models import Group
 
-from .serializers import AdminBrandSerializer, AdminUserSerializer, NestedAdminUserSerializer
-from .renderers import AdminUserJSONRenderer, AdminBrandJSONRenderer
+from .serializers import AdminBrandSerializer, AdminUserSerializer, NestedAdminUserSerializer, AdminGroupSerializer
+from .renderers import AdminGroupJSONRenderer, AdminUserJSONRenderer, AdminBrandJSONRenderer
 from authentication.models import User
 from brand.models import Brand
 from core.permissions import IsSystemAdmin, IsSiteAdmin
@@ -32,5 +34,13 @@ class AdminBrandViewSet(viewsets.ModelViewSet):
         (IsSystemAdmin|IsSiteAdmin)
     )
     renderer_classes = (AdminBrandJSONRenderer,)
-    
 
+
+class AdminGroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = AdminGroupSerializer
+    permission_classes = (
+        IsAuthenticated,
+        (IsSystemAdmin|IsSiteAdmin)
+    )
+    renderer_classes = (AdminGroupJSONRenderer,)

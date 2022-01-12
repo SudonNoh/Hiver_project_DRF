@@ -7,15 +7,7 @@ from .renderers import AdminUserJSONRenderer, AdminBrandJSONRenderer
 from authentication.models import User
 from brand.models import Brand
 from core.permissions import IsSystemAdmin, IsSiteAdmin
-
-
-class NestedSrializerMixin(viewsets.ModelViewSet):
-    read_serializer_class = None
-    
-    def get_serializer_class(self):
-        if self.request.method.lower() =="get":
-            return self.read_serializer_class
-        return self.serializer_class
+from core.views import NestedSrializerMixin
 
 
 # Admin이 User의 정보를 생성, 조회, 수정, 삭제 할 수 있어야 함.

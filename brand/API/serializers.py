@@ -4,7 +4,7 @@ from brand.models import Brand
 
 
 class BrandSerializer(serializers.ModelSerializer):
-    brand_logo = serializers.ImageField(use_url=True)
+    # brand_logo = serializers.ImageField(use_url=True)
     class Meta:
         model = Brand
         fields = [
@@ -24,12 +24,11 @@ class BrandSerializer(serializers.ModelSerializer):
             'brand_phone_number'
         ]
         
-    # def update(self, instance, validated_data):
-    #     print(instance)
-    #     print(validated_data.items())
+    def update(self, instance, validated_data):
         
-    #     for (key, value) in validated_data.items():
-    #         setattr(instance, key, value)
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
         
-    #     instance.save()
-    #     return instance
+        instance.save()
+        
+        return instance

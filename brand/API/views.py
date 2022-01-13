@@ -11,6 +11,9 @@ from .serializers import BrandSerializer
 from brand.models import Brand
 
 
+# Brand를 Create하는 부분은 Site_Admin 영역에서 진행
+# Vendor들은 각자 Brand의 정보만을 확인하고, 수정해야하므로
+# user의 brand 기준으로 보여주도록 함.
 class BrandRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = (
         IsAuthenticated, 
@@ -25,21 +28,24 @@ class BrandRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    # def patch(self, request, *args, **kwargs):
-    #     # serializer instance 보내기
-    #     # patch 관련 글 확인하기
+    def patch(self, request, *args, **kwargs):
         
-    #     brand_data = request.data
-    #     user_data = request.user.brand
-        
-    #     serializer_data = {
-    #     }
-        
-    #     serializer = self.serializer_class(
-    #         data=serializer_data, partial=True
-    #     )
+        request_data = request.data
+        user_data = request.user
 
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
+        serializer_data = {
+            'brand_address': request_data.get('brand_address', user_data.brand.brand_address),
+            'brand_email': request_data.get('brand_email', user_data.brand.brand_email),
+            'brand_homepage': request_data.get('brand_homepage', user_data.brand.brand_homepage),
+            'brand_description': request_data.get('brand_description', user_data.brand.brand_description),
+            'brand_logo': request_data.get('brand_logo', user_data.brand.brand_logo)
+        }
         
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(
+            user_data.brand, data=serializer_data, partial=True
+        )
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

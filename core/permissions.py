@@ -8,13 +8,24 @@ from rest_framework.permissions import BasePermission
 class CustomPerm(BasePermission):
     # 명제(proposition)
     def propo(self, request, view, group_name):
-        # group이 지정되지 않은 경우
+        # is_superuser 인 경우 True
+        if request.user.is_superuser:
+            return True
+        
+        # is_staff 인 경우 True
+        if request.user.is_staff:
+            return True
+        
+        # group이 지정되지 않은 경우 False
         if not request.user.groups.values():
             return False
         
+        # group_name이 'system_admin' 이면서 is_superuser가 아닌 경우 False
         if group_name == 'system_admin':
             if not request.user.is_superuser:
                 return False
+        
+        # group_name이 'site_admin' 이면서 is_staff가 아닌 경우 False
         elif group_name == 'site_admin':
             if not request.user.is_staff:
                 return False
@@ -26,16 +37,12 @@ class IsSystemAdmin(CustomPerm):
     # view 호출시 접근 권한
     # APView 접근 시 체크
     def has_permission(self, request, view):
-        if request.user.is_superuser:
-            return True
         return CustomPerm.propo(self, request, view, 'system_admin')
     
     # 개별 레코드 접근 권한
     # APView 의 get_object 함수를 통해 object 획득 시 체크
     # 브라우저를 통한 API 접근시에 CREATE/UPDATE Form 노출 여부 확인 시
     def has_object_permission(self, request, view, obj):
-        if request.user.is_superuser:
-            return True
         return CustomPerm.propo(self, request, view, 'system_admin')
 
 # groups가 is_admin인 경우에만 실행

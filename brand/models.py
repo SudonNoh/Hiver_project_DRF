@@ -26,3 +26,4 @@ class Brand(TimestampedModel):
     brand_homepage = models.URLField(blank=True)
     brand_description = models.TextField(blank=True)
     brand_logo = models.ImageField(default='media/Ryan.png', upload_to="%Y/%m/%d")
+    is_active = models.BooleanField(default=True)

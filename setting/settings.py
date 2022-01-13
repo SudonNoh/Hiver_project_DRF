@@ -144,5 +144,5 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
 }
 
-MEDIA = '/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

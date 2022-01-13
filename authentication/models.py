@@ -11,13 +11,13 @@ from core.models import TimestampedModel
 # Create your models here.
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     
-    username = models.CharField('Username', max_length=255, unique=True)
-    email = models.EmailField('Email', unique=True)
-    phone_number = models.CharField('Phone Number', max_length=255, unique=True)
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=255, unique=True)
     # Admin : 1
     # Customer : 2
     brand = models.ForeignKey(
-        'brand.Brand', 
+        'brand.Brand',
         related_name='user', 
         on_delete=models.PROTECT,
         default=2

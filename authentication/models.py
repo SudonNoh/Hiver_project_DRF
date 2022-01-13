@@ -14,11 +14,13 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     username = models.CharField('Username', max_length=255, unique=True)
     email = models.EmailField('Email', unique=True)
     phone_number = models.CharField('Phone Number', max_length=255, unique=True)
+    # Admin : 1
+    # Customer : 2
     brand = models.ForeignKey(
         'brand.Brand', 
         related_name='user', 
         on_delete=models.PROTECT,
-        default=1
+        default=2
         )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

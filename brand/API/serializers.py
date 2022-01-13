@@ -4,6 +4,7 @@ from brand.models import Brand
 
 
 class BrandSerializer(serializers.ModelSerializer):
+    brand_logo = serializers.ImageField(use_url=True)
     class Meta:
         model = Brand
         fields = [
@@ -14,6 +15,7 @@ class BrandSerializer(serializers.ModelSerializer):
             'brand_email',
             'brand_homepage',
             'brand_description',
+            'brand_logo'
         ]
         
         read_only_fields = [

@@ -25,25 +25,21 @@ class BrandRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def patch(self, request, *args, **kwargs):
-        # serializer instance 보내기
-        # patch 관련 글 확인하기
+    # def patch(self, request, *args, **kwargs):
+    #     # serializer instance 보내기
+    #     # patch 관련 글 확인하기
         
-        brand_data = request.data
-        user_data = request.user.brand
+    #     brand_data = request.data
+    #     user_data = request.user.brand
         
-        serializer_data = {
-            "brand_address": brand_data.get("brand_address", user_data.brand_address),
-            "brand_email": brand_data.get("brand_email", user_data.brand_email),
-            "brand_homepage": brand_data.get("brand_homepage",user_data.brand_homepage),
-            "brand_description": brand_data.get("brand_description", user_data.brand_description),
-        }
+    #     serializer_data = {
+    #     }
         
-        serializer = self.serializer_class(
-            , data=serializer_data, partial=True
-        )
+    #     serializer = self.serializer_class(
+    #         data=serializer_data, partial=True
+    #     )
 
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
         
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)

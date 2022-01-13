@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', include('admin.API.urls'), name='admin'),
     path('users/', include('authentication.API.urls'), name='authentication'),
     path('brand/', include('brand.API.urls'), name='brand'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# MEDIA_URL 에 대한 요청이 왔을 때 MEDIA_ROOT 에서 일을 처리

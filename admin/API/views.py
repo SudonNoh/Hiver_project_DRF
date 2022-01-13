@@ -31,7 +31,7 @@ class AdminBrandViewSet(viewsets.ModelViewSet):
     serializer_class = AdminBrandSerializer
     permission_classes = (
         IsAuthenticated,
-        (IsSystemAdmin|IsSiteAdmin)
+        (IsSystemAdmin|IsSiteAdmin),
     )
     renderer_classes = (AdminBrandJSONRenderer,)
 
@@ -41,6 +41,6 @@ class AdminGroupViewSet(viewsets.ModelViewSet):
     serializer_class = AdminGroupSerializer
     permission_classes = (
         IsAuthenticated,
-        (IsSystemAdmin|IsSiteAdmin)
+        (IsSystemAdmin|IsSiteAdmin),
     )
     renderer_classes = (AdminGroupJSONRenderer,)

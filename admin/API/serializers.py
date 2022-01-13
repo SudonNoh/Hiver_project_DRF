@@ -1,5 +1,4 @@
 from rest_framework import serializers
-# from brand.API.serializers import BrandSerializer
 
 from authentication.models import User
 from brand.models import Brand
@@ -19,17 +18,24 @@ class AdminBrandSerializer(serializers.ModelSerializer):
         
         
 class AdminUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        max_length = 128,
+        min_length = 8,
+        write_only = True
+    )
     class Meta:
         model = User
         fields = [
             'id',
             'username',
             'email',
+            'password',
             'phone_number',
             'groups',
             'brand',
             'last_login',
             'is_active',
+            'is_staff',
             'created_at',
             'updated_at',
         ]
@@ -50,6 +56,8 @@ class NestedAdminUserSerializer(serializers.ModelSerializer):
             'brand',
             'last_login',
             'is_active',
+            'is_staff',
+            'is_superuser',
             'created_at',
             'updated_at',
         ]

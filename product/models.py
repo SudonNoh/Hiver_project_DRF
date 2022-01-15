@@ -18,7 +18,7 @@ class Product(models.Model):
     product_color = models.CharField(max_length=255)
     product_number = models.CharField(max_length=128, unique=True)
     
-    def update(self):
+    # def update(self):
         
-    def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
         

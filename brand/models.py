@@ -18,10 +18,7 @@ class Brand(TimestampedModel):
             ('Admin', 'Admin')
             ]
         )
-    brand_phone_number = models.CharField(
-        max_length=255, 
-        unique=True
-        )
+    brand_phone_number = models.CharField(max_length=255)
     brand_email = models.EmailField(blank=True)
     brand_homepage = models.URLField(blank=True)
     brand_description = models.TextField(blank=True)

@@ -23,3 +23,22 @@ class Product(models.Model):
         
     # def save(self, *args, **kwargs):
         
+
+'''
+예시
+class Post(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    original_number = models.CharField(max_length=255, blank=True)
+    
+    def update_model(self):
+        print(self.title)
+        print(self.id)
+        print(type(self.id))
+        Post.objects.filter(id=self.id).update(original_number=str(self.id)+datetime.today().strftime('%Y%m%d'))
+
+    def save(self, *args, **kwargs):
+        self.original_number = self.title
+        super(Post, self).save(*args, **kwargs)
+        self.update_model()
+'''

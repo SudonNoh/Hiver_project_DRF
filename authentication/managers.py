@@ -19,8 +19,10 @@ class UserManager(BaseUserManager):
             email = self.normalize_email(email),
             **extra_fields
         )
-
+        print('password setting !!!!!!!!!!!!!!!!!')
+        print(password)
         user.set_password(password)
+        print('second password !!!!!!!!!!!!!!!', user.password)
         user.save()
         return user
 

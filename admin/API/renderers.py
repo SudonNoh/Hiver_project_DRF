@@ -25,4 +25,22 @@ class AdminGroupJSONRenderer(BaseJSONRenderer):
     pagination_count_label = 'Admin_groupCount'
     
     def render(self, data, media_type=None, renderer_context=None):
-        return super(AdminBrandJSONRenderer, self).render(data)
+        return super(AdminGroupJSONRenderer, self).render(data)
+    
+
+class AdminCategoryJSONRenderer(BaseJSONRenderer):
+    object_label = 'Admin_category'
+    pagination_object_label = 'Admin_category'
+    pagination_count_label = 'Admin_categoryCount'
+    
+    def render(self, data, media_type=None, renderer_context=None):
+        return super(AdminCategoryJSONRenderer, self).render(data)
+    
+
+class AdminSubCategoryJSONRenderer(BaseJSONRenderer):
+    object_label = 'Admin_subcategory'
+    pagination_object_label = 'Admin_subcategory'
+    pagination_count_label = 'Admin_subcategoryCount'
+    
+    def render(self, data, media_type=None, renderer_context=None):
+        return super(AdminSubCategoryJSONRenderer, self).render(data)

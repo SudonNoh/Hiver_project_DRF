@@ -4,10 +4,29 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import Group
 
-from .serializers import AdminBrandSerializer, AdminUserSerializer, NestedAdminUserSerializer, AdminGroupSerializer
-from .renderers import AdminGroupJSONRenderer, AdminUserJSONRenderer, AdminBrandJSONRenderer
+from .serializers import (
+    AdminBrandSerializer, 
+    AdminUserSerializer, 
+    NestedAdminUserSerializer, 
+    AdminGroupSerializer,
+    AdminCategorySerializer,
+    AdminSubCategorySerializer
+    )
+
+from .renderers import (
+    AdminGroupJSONRenderer, 
+    AdminUserJSONRenderer, 
+    AdminBrandJSONRenderer,
+    AdminCategoryJSONRenderer,
+    AdminSubCategoryJSONRenderer
+    )
+
 from authentication.models import User
 from brand.models import Brand
+from product.models import (
+    Category, 
+    SubCategory,
+    )
 from core.permissions import IsSystemAdmin, IsSiteAdmin
 from core.views import NestedSrializerMixin
 
@@ -44,3 +63,23 @@ class AdminGroupViewSet(viewsets.ModelViewSet):
         (IsSystemAdmin|IsSiteAdmin),
     )
     renderer_classes = (AdminGroupJSONRenderer,)
+
+
+class AdminCategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = AdminCategorySerializer
+    permission_classes = (
+        IsAuthenticated,
+        (IsSystemAdmin|IsSiteAdmin),
+    )
+    renderer_classes = (AdminCategoryJSONRenderer,)
+    
+
+class AdminSubCategoryViewSet(viewsets.ModelViewSet):
+    queryset = SubCategory.objects.all()
+    serializer_class = AdminSubCategorySerializer
+    permission_classes = (
+        IsAuthenticated,
+        (IsSystemAdmin|IsSiteAdmin),
+    )
+    renderer_classes = (AdminSubCategoryJSONRenderer,)

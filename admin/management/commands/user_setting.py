@@ -193,7 +193,7 @@ class Command(BaseCommand):
             if user.brand.brand == 'Admin':
                 group = Group.objects.get(name="site_admin")
                 
-            elif user.brand.brand == "customer":
+            elif user.brand.brand == "Customer":
                 if int(name[-1]) < 6:
                     group = Group.objects.get(name="membership_customer")
                 else:
@@ -206,7 +206,7 @@ class Command(BaseCommand):
                 group = Group.objects.get(name="general_vendor")
                 
             user.groups.add(group)
-            print('user.name : ', user.username,'\nuser.group : ', user.groups.values(), '\nuser.brand : ', user.brand.brand)
+            print('user.name : ', user.username,'\nuser.group : ', user.groups.values()[0]['name'], '\nuser.brand : ', user.brand.brand)
             user.save()
             
         print('finished setting')

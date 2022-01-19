@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'admin',
     'authentication',
     'brand',
+    'product',
 ]
 
 MIDDLEWARE = [

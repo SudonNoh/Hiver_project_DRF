@@ -1,3 +1,4 @@
+from dataclasses import field
 from django.db import models
 from core.models import TimestampedModel
 from datetime import datetime
@@ -8,8 +9,16 @@ class Category(models.Model):
     
     
 class SubCategory(models.Model):
-    category = models.ForeignKey(unique=True, max_length=128)
-    subcategory = models.CharField(unique=True, max_length=128)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    subcategory = models.CharField(max_length=128)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["category", "subcategory"],
+                name = "Unique_Category"
+            )
+        ]
     
     
 # 이하 단계에서는 각 브랜드 수준에서 진행
@@ -41,8 +50,17 @@ class Post(models.Model):
 '''
 
 class Size(models.Model):
-    size_name = models.CharField(max_length=128, unique=True)
+    # XL, L, M, S, 110, 105, 100, 95 etc.
+    size_name = models.CharField(max_length=128)
     brand_id = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["size_name", "brand_id"],
+                name = "Unique_Size"
+            )
+        ]
     
 
 class Measurement(models.Model):
@@ -56,4 +74,4 @@ class Part(models.Model):
 
 class Goods(models.Model):
     size_id = models.ForeignKey('product.Size', on_delete=models.PROTECT)
-    product_id = models.ForeignKey('product.Product')
+    product_id = models.ForeignKey('product.Product', on_delete=models.PROTECT)

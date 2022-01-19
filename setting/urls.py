@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', include('admin.API.urls'), name='admin'),
     path('users/', include('authentication.API.urls'), name='authentication'),
     path('brand/', include('brand.API.urls'), name='brand'),
+    path('product/', include('product.API.urls'), name='product'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # MEDIA_URL 에 대한 요청이 왔을 때 MEDIA_ROOT 에서 일을 처리

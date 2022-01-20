@@ -10,11 +10,11 @@ from product.models import (
     Product
 )
 from .serializers import (
-    SizeSerializer,
+    ProductSerializer, SizeSerializer, Product
 )
 
 from .renderers import (
-    SizeRenderer,
+    SizeRenderer, ProductRenderer
 )
 from core.permissions import (
     IsSystemAdmin, IsSiteAdmin, IsMasterVendor, IsGeneralVendor
@@ -24,7 +24,8 @@ class SizeViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet):
+    viewsets.GenericViewSet
+    ):
     
     queryset = Size.objects.all()
     renderer_classes = (SizeRenderer,)
@@ -107,3 +108,46 @@ class SizeViewSet(
         data.delete()
         
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class ProductViewSet(
+    viewsets.ModelViewSet
+    ):
+    
+    queryset = Product.objects.all()
+    renderer_classes = (ProductRenderer,)
+    serializer_class = ProductSerializer
+    
+    def get_queryset(self):
+        queryset = self.queryset.filter(brand=self.request.user.brand)
+        return  queryset
+    
+    def get_permissions(self):
+        if self.action == 'destroy':
+            permission_classes = [
+                IsAuthenticated, 
+                (IsSystemAdmin|IsSiteAdmin|IsMasterVendor),
+                ]
+        else:
+            permission_classes = [
+                IsAuthenticated,
+                (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
+                ]
+        return [permission() for permission in permission_classes]
+    
+    def create(self, request):
+        serializer_context = {
+            'brand': request.user.brand,
+            'request': request
+        }
+        print(request.data['subcategory'])
+        serializer_data = request.data
+        serializer = self.serializer_class(
+            data = serializer_data, context=serializer_context
+        )
+        
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        

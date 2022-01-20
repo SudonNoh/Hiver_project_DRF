@@ -20,6 +20,8 @@ class SubCategory(models.Model):
             )
         ]
     
+    def __str__(self):
+        return self.subcategory
     
 # 이하 단계에서는 각 브랜드 수준에서 진행
 class Product(models.Model):

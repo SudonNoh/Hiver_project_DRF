@@ -11,19 +11,19 @@ from product.models import (
 
 # Size Serializer
 class SizeSerializer(serializers.ModelSerializer):
-    brand_id = BrandSerializer(read_only=True)
+    # brand_id = BrandSerializer(read_only=True)
+    brand = serializers.StringRelatedField()
     class Meta:
         model = Size
         fields = [
             'id',
             'size_name',
-            'brand_id'
+            'brand'
             ]
-        # depth=1
     
     def create(self, validated_data):
-        brand_id = self.context.get('brand_id', None)
-        size = Size.objects.create(brand_id=brand_id, **validated_data)
+        brand = self.context.get('brand', None)
+        size = Size.objects.create(brand=brand, **validated_data)
         return size
     
 # Product Serializer

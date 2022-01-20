@@ -23,7 +23,7 @@ class SubCategory(models.Model):
     
 # 이하 단계에서는 각 브랜드 수준에서 진행
 class Product(models.Model):
-    brand_id = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
+    brand = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
     name = models.CharField(max_length=255, unique=True)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
     product_color = models.CharField(max_length=255)
@@ -52,12 +52,12 @@ class Post(models.Model):
 class Size(models.Model):
     # XL, L, M, S, 110, 105, 100, 95 etc.
     size_name = models.CharField(max_length=128)
-    brand_id = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
+    brand = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
     
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["size_name", "brand_id"],
+                fields=["size_name", "brand"],
                 name = "Unique_Size"
             )
         ]
@@ -73,5 +73,5 @@ class Part(models.Model):
 
 
 class Goods(models.Model):
-    size_id = models.ForeignKey('product.Size', on_delete=models.PROTECT)
-    product_id = models.ForeignKey('product.Product', on_delete=models.PROTECT)
+    size = models.ForeignKey('product.Size', on_delete=models.PROTECT)
+    product = models.ForeignKey('product.Product', on_delete=models.PROTECT)

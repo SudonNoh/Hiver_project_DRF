@@ -8,7 +8,7 @@ from .views import (
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'size', SizeViewSet)
-router.register(r'product', ProductViewSet)
+router.register(r'items', ProductViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

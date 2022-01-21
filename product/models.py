@@ -1,7 +1,6 @@
 from dataclasses import field
 from django.db import models
 from core.models import TimestampedModel
-from datetime import datetime
 
 # Category, SubCategory 모델 생성 및 수정, 삭제는 system_admin , site_admin 수준에서 진행
 class Category(models.Model):
@@ -26,11 +25,19 @@ class SubCategory(models.Model):
 # 이하 단계에서는 각 브랜드 수준에서 진행
 class Product(models.Model):
     brand = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
     product_color = models.CharField(max_length=255)
     # Serializers.py 에서 자동으로 입력되도록 구현
     product_number = models.CharField(max_length=128, blank=True)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["brand", "name", "product_color"],
+                name = "Unique_Product"
+            )
+        ]
 
 '''
 예시
@@ -73,7 +80,7 @@ class Part(models.Model):
     part = models.CharField(max_length=128)
     measurement = models.ManyToManyField('product.Measurement', related_name='part')
 
-
+    
 class Goods(models.Model):
     size = models.ForeignKey('product.Size', on_delete=models.PROTECT)
     product = models.ForeignKey('product.Product', on_delete=models.PROTECT)

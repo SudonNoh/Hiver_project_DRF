@@ -111,6 +111,25 @@ class ProductViewSet(
     
     def get_queryset(self):
         queryset = self.queryset.filter(brand=self.request.user.brand)
+        
+        subcategory_text = self.request.query_params.get('subcategory', None)
+        if subcategory_text is not None:
+            queryset = queryset.filter(
+                subcategory__subcategory__icontains=subcategory_text
+                )
+        
+        category_text = self.request.query_params.get('category', None)
+        if category_text is not None:
+            queryset = queryset.filter(
+                subcategory__category__category__icontains=category_text
+                )
+        
+        product_color_text = self.request.query_params.get('product_color', None)
+        if product_color_text is not None:
+            queryset = queryset.filter(
+                product_color__icontains=product_color_text
+            )
+        
         return  queryset
     
     def get_permissions(self):

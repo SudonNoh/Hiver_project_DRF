@@ -39,24 +39,6 @@ class Product(models.Model):
             )
         ]
 
-'''
-예시
-class Post(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    original_number = models.CharField(max_length=255, blank=True)
-    
-    def update_model(self):
-        print(self.title)
-        print(self.id) 
-        print(type(self.id))
-        Post.objects.filter(id=self.id).update(original_number=str(self.id)+datetime.today().strftime('%Y%m%d'))
-
-    def save(self, *args, **kwargs):
-        self.original_number = self.title
-        super(Post, self).save(*args, **kwargs)
-        self.update_model()
-'''
 
 class Size(models.Model):
     # XL, L, M, S, 110, 105, 100, 95 etc.
@@ -80,7 +62,7 @@ class Part(models.Model):
     part = models.CharField(max_length=128)
     measurement = models.ManyToManyField('product.Measurement', related_name='part')
 
-    
+
 class Goods(models.Model):
     size = models.ForeignKey('product.Size', on_delete=models.PROTECT)
     product = models.ForeignKey('product.Product', on_delete=models.PROTECT)

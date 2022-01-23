@@ -22,7 +22,7 @@ class Brand(TimestampedModel):
     brand_email = models.EmailField(blank=True)
     brand_homepage = models.URLField(blank=True)
     brand_description = models.TextField(blank=True)
-    brand_logo = models.ImageField(default='media/Ryan.png', upload_to="%Y/%m/%d")
+    brand_logo = models.ImageField(default='media/default/Ryan.jpg', upload_to="logo/%Y/%m/%d")
     is_active = models.BooleanField(default=True)
     
     def __str__(self):

@@ -35,7 +35,6 @@ class SizeViewSet(
     # 추후에 Product를 category 별로 불러 오고 싶을 때 사용
     # List method에 적용됨      
     def get_queryset(self):
-        print('\n\n\n\n', 1, '\n\n\n')
         queryset = self.queryset.filter(brand=self.request.user.brand)
         return queryset
     
@@ -148,7 +147,8 @@ class ProductViewSet(
     def create(self, request):
         serializer_context = {
             'brand': request.user.brand,
-            'subcategory':request.data['subcategory']
+            'subcategory':request.data['subcategory'],
+            'request':request
         }
         serializer_data = request.data
         serializer = self.serializer_class(

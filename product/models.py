@@ -39,6 +39,11 @@ class Product(models.Model):
             )
         ]
 
+class Product_image(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='image')
+    image = models.ImageField(default='media/default/Ryan.jpg', upload_to="product/%Y/%m/%d")
+    is_main = models.BooleanField(default=False)
+
 
 class Size(models.Model):
     # XL, L, M, S, 110, 105, 100, 95 etc.

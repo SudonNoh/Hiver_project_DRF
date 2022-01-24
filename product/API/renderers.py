@@ -17,3 +17,12 @@ class ProductRenderer(BaseJSONRenderer):
     
     def render(self, data, media_type=None, renderer_context=None):
         return super(ProductRenderer, self).render(data)
+    
+
+class Product_imageRenderer(BaseJSONRenderer):
+    object_label = 'Product_image'
+    pagination_object_label = 'Product_images'
+    pagination_count_label = 'Product_imagesCount'
+    
+    def render(self, data, media_type=None, renderer_context=None):
+        return super(Product_imageRenderer, self).render(data)

@@ -88,8 +88,3 @@ class ProductSerializer(serializers.ModelSerializer):
         product.save()
         
         return product
-    
-    
-# Postman 으로 요청했을 때 image 에 대한 내용이 나오지 않음.
-# Article 프로젝트를 보고 수정해야함 image가 나오도록.
-# TagRelated 필드와 같이 필드를 따로 만들어야함

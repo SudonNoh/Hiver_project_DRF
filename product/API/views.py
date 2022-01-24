@@ -1,5 +1,3 @@
-from functools import partial
-from logging import raiseExceptions
 from rest_framework import status, mixins, viewsets
 
 from rest_framework.exceptions import NotFound
@@ -7,26 +5,40 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from product.models import (
-    Size, 
-    Product
+    Size, Product, Product_image
 )
 from .serializers import (
-    ProductSerializer, SizeSerializer, Product
+    ProductSerializer, SizeSerializer, Product_imageSerializer
 )
-
 from .renderers import (
-    SizeRenderer, ProductRenderer
+    SizeRenderer, ProductRenderer, Product_imageRenderer
 )
 from core.permissions import (
     IsSystemAdmin, IsSiteAdmin, IsMasterVendor, IsGeneralVendor
 )
 
 class SizeViewSet(
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
     mixins.ListModelMixin,
     viewsets.GenericViewSet
     ):
+    # UpdateModelMixin을 상속받지 않은 상태에서 partial_update가 동작하는 것을 보고
+    # 의구심이 들었다. 그래서 다른 동작도 되지 않는지 확인해보았다.
+    
+    # 기존에 mixins.CreateModelMixin과 mixins.DestroyMixin을 상속 받았었는데,
+    # 두 가지 모두 주석처리 해도 POST와 DELETE가 동작하는 것이었다. 다만 get 요청은
+    # 동작하지 않았다.
+    
+    # 그 원인을 찾아 보았는데, 상속받은 GenericViewSet 을 따라가다 보면 결국 APIView가
+    # 나타난다. 따라서 여기서 정의한 create method와 partial_update method, 
+    # destory method는 각 요청에 맞게 동작한다. 
+    
+    # 반면 list 에 대해서는 따로 정의하지 않았기 때문에 ListModelMixin을 상속받지 않으면
+    # get 요청에 대해 응답할 method가 없게 된다. 따라서 get 요청에 대해서는 "not allowed"가
+    # 반환된다.
+    
+    # 이것으로 create, partial_update 등 직접 구현할 동작들에 대해서는 mixin을 따로 상속받지 않아도
+    # 된다는 것을 알게 되었다. 바꿔 말하자면 추가로 구현할 동작이 없는 경우에는 단순히 mixin만 상속받으면
+    # 정상적으로 동작한다는 것을 알 수 있다.
     
     queryset = Size.objects.all()
     renderer_classes = (SizeRenderer,)
@@ -54,9 +66,6 @@ class SizeViewSet(
     
     def create(self, request):
         serializer_context = {
-            # CONTEXT에 request user의 brand 정보를 담아 Serializer에 보내면
-            # serializer에서는 request user의 brand를 create할 때 인스턴스로 넣어줌
-            # SizeSerializer()의 def create 부분 참고
             'brand': request.user.brand,
         }
         
@@ -158,3 +167,16 @@ class ProductViewSet(
         serializer.save()
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    
+class Product_imageViewSet(
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+    ):
+    
+    queryset = Product_image.objects.all()
+    renderer_classes = (Product_imageRenderer,)
+    serializer_class = ProductSerializer
+    

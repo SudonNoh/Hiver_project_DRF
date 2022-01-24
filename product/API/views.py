@@ -167,16 +167,3 @@ class ProductViewSet(
         serializer.save()
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-    
-class Product_imageViewSet(
-    mixins.ListModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.UpdateModelMixin,
-    viewsets.GenericViewSet
-    ):
-    
-    queryset = Product_image.objects.all()
-    renderer_classes = (Product_imageRenderer,)
-    serializer_class = ProductSerializer
-    

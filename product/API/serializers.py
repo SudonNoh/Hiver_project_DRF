@@ -1,5 +1,4 @@
 from datetime import datetime
-from turtle import Turtle
 from rest_framework import serializers
 
 from brand.API.serializers import (

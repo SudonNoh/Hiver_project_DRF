@@ -87,3 +87,10 @@ class ProductSerializer(serializers.ModelSerializer):
         product.save()
         
         return product
+    
+    
+class Product_imageSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Product_image
+        fields = "__all__"

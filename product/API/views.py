@@ -1,3 +1,4 @@
+from typing import Generic
 from rest_framework import status, mixins, viewsets
 
 from rest_framework.exceptions import NotFound
@@ -167,3 +168,29 @@ class ProductViewSet(
         serializer.save()
         
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    
+class Product_imageViewSet(
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+    ):
+    
+    queryset = Product_image.objects.all()
+    serializer_class = Product_imageSerializer
+    permission_class = [
+        IsAuthenticated,
+        (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
+        ]
+
+    def get_queryset(self):
+        
+        # User의 brand 명과 image.product.brand 명을 확인해서 queryset을 구성
+        # 만약 둘이 다른 경우 not allowed error 발생하도록 설정
+        if self.request.user.brand == 'Admin':
+            queryset = self.queryset
+        else:
+            queryset = self.queryset.filter(product__brand=self.request.user.brand)
+        
+        return queryset

@@ -1,4 +1,6 @@
 from datetime import datetime
+from distutils.log import error
+from wsgiref import validate
 from rest_framework import serializers
 
 from brand.API.serializers import (
@@ -60,7 +62,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'subcategory',
             'product_color',
             'product_number',
-            'image'
+            'image',
         ]
             
     def create(self, validated_data):
@@ -76,9 +78,17 @@ class ProductSerializer(serializers.ModelSerializer):
             **validated_data
             )
         
+        # 첫번째 들어오는 image_data를 main으로 저장
+        cnt = 0
         for image_data in images_data.getlist('image'):
-            Product_image.objects.create(product=product, image=image_data)
-        
+            cnt += 1
+            if cnt == 1:
+                Product_image.objects.create(
+                    product=product, image=image_data, is_main=True
+                    )
+            else:
+                Product_image.objects.create(product=product, image=image_data)
+                
         date = datetime.today().strftime('%Y%m%d')[2:].zfill(6)
         brand_pk = str(product.brand.pk).zfill(3)
         product_pk = str(product.pk).zfill(4)
@@ -94,3 +104,22 @@ class Product_imageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_image
         fields = "__all__"
+        
+    def update(self, instance, validated_data):
+        
+        print(validated_data['is_main'])
+        print(instance.product)
+        
+        if validated_data['is_main']:
+            queryset = Product_image.objects.filter(product=instance.product, is_main=True)
+            print(queryset)
+            if queryset is not None:
+                raise serializers.ValidationError(
+                    '"is_main" 은 하나만 설정이 가능합니다.'
+                )
+            else:
+                for (key, value) in validated_data.items():
+                    setattr(instance, key, value)
+                    
+                
+        

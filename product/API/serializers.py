@@ -101,11 +101,10 @@ class ProductSerializer(serializers.ModelSerializer):
     
     
 class Product_imageSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Product_image
         fields = "__all__"
-        
+    
     def update(self, instance, validated_data):
         try:
             is_main = validated_data['is_main']
@@ -139,7 +138,7 @@ class Product_imageSerializer(serializers.ModelSerializer):
             for (key, value) in validated_data.items():
                 setattr(instance, key, value)
             instance.save()
-        
+
         return instance
     
     

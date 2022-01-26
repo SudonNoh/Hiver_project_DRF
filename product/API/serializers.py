@@ -1,5 +1,6 @@
 from datetime import datetime
 from distutils.log import error
+from queue import Empty
 from wsgiref import validate
 from rest_framework import serializers
 
@@ -106,20 +107,39 @@ class Product_imageSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
     def update(self, instance, validated_data):
-        
-        print(validated_data['is_main'])
-        print(instance.product)
-        
-        if validated_data['is_main']:
-            queryset = Product_image.objects.filter(product=instance.product, is_main=True)
-            print(queryset)
-            if queryset is not None:
-                raise serializers.ValidationError(
-                    '"is_main" 은 하나만 설정이 가능합니다.'
+        try:
+            is_main = validated_data['is_main']
+            
+            # is_main이 True인 경우
+            if is_main:
+                queryset = Product_image.objects.filter(
+                    product=instance.product, is_main=True
                 )
+                
+                # 이미 main 사진이 있는 경우
+                if queryset.exists():
+                    raise serializers.ValidationError(
+                        '메인 사진은 한 장만 등록이 가능합니다.'
+                    )
+                    
+                # main 사진이 지정되지 않은 경우
+                else:
+                    for (key, value) in validated_data.items():
+                        setattr(instance, key, value)
+                    instance.save()
+            
+            # is_main이 False인 경우
             else:
                 for (key, value) in validated_data.items():
                     setattr(instance, key, value)
-                    
+                instance.save()
                 
+        # is_main을 받지 않은 경우 살행
+        except KeyError:
+            for (key, value) in validated_data.items():
+                setattr(instance, key, value)
+            instance.save()
         
+        return instance
+    
+    

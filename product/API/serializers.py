@@ -101,44 +101,23 @@ class ProductSerializer(serializers.ModelSerializer):
     
     
 class Product_imageSerializer(serializers.ModelSerializer):
+    is_main = serializers.BooleanField(required=True)
     class Meta:
         model = Product_image
         fields = "__all__"
+        
+    # is_main 을 무조건 받고
+    # is_main이 True 인 객체를 찾고,
+    # update 시에 is_main이 True가 들어오면
+    # 기존의 is_main을 지우고
+    # update 시에 들어온 is_main을 True로 유지
     
+    # create할 때도 True가 하나 있으면 그걸 막아야함
+    # 그리고 만약 그림이 10장 이상이면 입력 더 못하게 막아야함
+    def create(self, instance, validated_data):
+        # 여기서 True가 없으면 이 객체는 True로 줘야함
+        if 
+        
     def update(self, instance, validated_data):
-        try:
-            is_main = validated_data['is_main']
-            
-            # is_main이 True인 경우
-            if is_main:
-                queryset = Product_image.objects.filter(
-                    product=instance.product, is_main=True
-                )
-                
-                # 이미 main 사진이 있는 경우
-                if queryset.exists():
-                    raise serializers.ValidationError(
-                        '메인 사진은 한 장만 등록이 가능합니다.'
-                    )
-                    
-                # main 사진이 지정되지 않은 경우
-                else:
-                    for (key, value) in validated_data.items():
-                        setattr(instance, key, value)
-                    instance.save()
-            
-            # is_main이 False인 경우
-            else:
-                for (key, value) in validated_data.items():
-                    setattr(instance, key, value)
-                instance.save()
-                
-        # is_main을 받지 않은 경우 살행
-        except KeyError:
-            for (key, value) in validated_data.items():
-                setattr(instance, key, value)
-            instance.save()
-
+        # 여기서는 True인 값이 들어오면 객체를 True로 원래 있던 객체는 False로 바꿔야함
         return instance
-    
-    

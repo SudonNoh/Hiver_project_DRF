@@ -171,6 +171,7 @@ class ProductViewSet(
     
     
 class Product_imageViewSet(
+    mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,

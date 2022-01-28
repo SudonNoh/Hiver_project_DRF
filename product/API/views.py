@@ -195,3 +195,16 @@ class Product_imageViewSet(
             queryset = self.queryset.filter(product__brand=self.request.user.brand)
         
         return queryset
+    
+    def create(self, request):
+        serializer_context = {
+            'request':request
+        }
+        serializer_data = request.data
+        serializer = self.serializer_class(
+            data = serializer_data, context=serializer_context
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

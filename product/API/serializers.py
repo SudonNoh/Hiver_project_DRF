@@ -106,3 +106,8 @@ class Product_imageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_image
         fields = "__all__"
+        
+        # image를 추가, 업데이트, 삭제하는 기능을 만들어야함
+        # image를 추가할 때는 product 의 main 이미지가 있는 지 확인
+        # main 이미지가 있으면 main image를 지금 추가한 image로 변경
+        # update 시에도 동일한 로직을 추가

@@ -186,25 +186,29 @@ class Product_imageViewSet(
         ]
 
     def get_queryset(self):
-        
+        # subcategory_text = self.request.query_params.get('subcategory', None)
+        # if subcategory_text is not None:
+        #     queryset = queryset.filter(
+        #         subcategory__subcategory__icontains=subcategory_text
+        #         )
         # User의 brand 명과 image.product.brand 명을 확인해서 queryset을 구성
         # 만약 둘이 다른 경우 not allowed error 발생하도록 설정
+        queryset = self.queryset
+        
         if self.request.user.brand == 'Admin':
             queryset = self.queryset
         else:
-            queryset = self.queryset.filter(product__brand=self.request.user.brand)
+            # product 개별 image list 조회
+            product = self.request.query_params.get('product', None)
+            if product is not None:
+                queryset = queryset.filter(
+                    product__pk__contains=product
+                )
+            else:
+                # 해당 brand product의 모든 image list 조회
+                queryset = self.queryset.filter(product__brand=self.request.user.brand)
         
         return queryset
     
-    def create(self, request):
-        serializer_context = {
-            'request':request
-        }
-        serializer_data = request.data
-        serializer = self.serializer_class(
-            data = serializer_data, context=serializer_context
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class

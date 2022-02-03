@@ -22,26 +22,32 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.subcategory
     
+    
 # 이하 단계에서는 각 브랜드 수준에서 진행
 class Product(models.Model):
     brand = models.ForeignKey('brand.Brand', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
-    product_color = models.CharField(max_length=255)
     # Serializers.py 에서 자동으로 입력되도록 구현
     product_number = models.CharField(max_length=128, blank=True)
     
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["brand", "name", "product_color"],
+                fields=["brand", "name"],
                 name = "Unique_Product"
             )
         ]
 
-class Product_image(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='image')
-    image = models.ImageField(default='media/default/Ryan.jpg', upload_to="product/%Y/%m/%d")
+
+class Product_Color(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_color')
+    color = models.CharField(max_length=128)
+
+
+class Product_Image(models.Model):
+    product_color = models.ForeignKey(Product_Color, on_delete=models.CASCADE, related_name='product_image')
+    image = models.ImageField(default='media/default/Ryan.jpg', upload_to="product/image/%Y/%m/%d")
     is_main = models.BooleanField(default=False)
 
 
@@ -58,16 +64,21 @@ class Size(models.Model):
             )
         ]
     
-
-class Measurement(models.Model):
-    measurement = models.CharField(max_length=128, unique=True)
-
-
-class Part(models.Model):
-    part = models.CharField(max_length=128)
-    measurement = models.ManyToManyField('product.Measurement', related_name='part')
-
-
+    
 class Goods(models.Model):
     size = models.ForeignKey('product.Size', on_delete=models.PROTECT)
-    product = models.ForeignKey('product.Product', on_delete=models.PROTECT)
+    product_color = models.ForeignKey('product.Product_Color', on_delete=models.PROTECT)
+    price = models.IntegerField()
+    quantity = models.IntegerField()
+    
+
+class Sale_Goods(TimestampedModel):
+    title = models.CharField(max_length=255)
+    content_text = models.TextField(max_length=255)
+    content_image = models.ImageField()
+    # product와 관련된 것들 중 일부만 ? or 전체 ?
+    # 만약 색깔 별로 등록하려면 product에 조건을 달아서 등록하는 것으로 하는게 낫나 ?
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # product에 따라서 goods_list를 불러오도록 만들까 ?
+    # 어떤 식으로 해야 좋을지 고민해야 한다.
+    # goods_list = 

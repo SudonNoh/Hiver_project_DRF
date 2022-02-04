@@ -101,4 +101,3 @@ class ProductSerializer(serializers.ModelSerializer):
         return product
     
     
-class 

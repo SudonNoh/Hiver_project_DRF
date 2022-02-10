@@ -19,10 +19,10 @@ class ProductRenderer(BaseJSONRenderer):
         return super(ProductRenderer, self).render(data)
     
 
-class Product_imageRenderer(BaseJSONRenderer):
-    object_label = 'Product_image'
-    pagination_object_label = 'Product_images'
-    pagination_count_label = 'Product_imagesCount'
+class Product_ImageRenderer(BaseJSONRenderer):
+    object_label = 'Product_Image'
+    pagination_object_label = 'Product_Images'
+    pagination_count_label = 'Product_ImagesCount'
     
     def render(self, data, media_type=None, renderer_context=None):
-        return super(Product_imageRenderer, self).render(data)
+        return super(Product_ImageRenderer, self).render(data)

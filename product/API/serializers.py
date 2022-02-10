@@ -1,8 +1,4 @@
 from datetime import datetime
-from distutils.log import error
-from operator import truediv
-from queue import Empty
-from wsgiref import validate
 from rest_framework import serializers
 
 from brand.API.serializers import (
@@ -10,7 +6,7 @@ from brand.API.serializers import (
     )
 
 from product.models import (
-    SubCategory, Category, Size, Product, Product_image
+    SubCategory, Category, Size, Product, Product_Image
     )
 
 
@@ -42,9 +38,9 @@ class SizeSerializer(serializers.ModelSerializer):
     
     
 # Product Image Serializer
-class Product_imageSerializer(serializers.ModelSerializer):
+class Product_ImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product_image
+        model = Product_Image
         fields = '__all__'
 
 
@@ -52,7 +48,7 @@ class Product_imageSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     brand = serializers.StringRelatedField(read_only=True)
     product_number = serializers.CharField(max_length=128, read_only=True)
-    image = Product_imageSerializer(many=True, read_only=True)
+    image = Product_ImageSerializer(many=True, read_only=True)
     subcategory = SubCategorySerializer(read_only=True)
     
     class Meta:

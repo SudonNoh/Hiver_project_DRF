@@ -75,10 +75,11 @@ class Goods(models.Model):
 class Sale_Goods(TimestampedModel):
     title = models.CharField(max_length=255)
     content_text = models.TextField(max_length=255)
-    content_image = models.ImageField()
-    # product와 관련된 것들 중 일부만 ? or 전체 ?
-    # 만약 색깔 별로 등록하려면 product에 조건을 달아서 등록하는 것으로 하는게 낫나 ?
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # product에 따라서 goods_list를 불러오도록 만들까 ?
-    # 어떤 식으로 해야 좋을지 고민해야 한다.
-    # goods_list = 
+    content_image1 = models.ImageField()
+    content_image2 = models.ImageField()
+    goods = models.ManyToManyField(Goods)
+    sale_price = models.IntegerField()
+    is_active = models.BooleanField(default=True)
+    
+
+    

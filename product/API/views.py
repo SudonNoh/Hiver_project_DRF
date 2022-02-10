@@ -1,4 +1,3 @@
-from typing import Generic
 from rest_framework import status, mixins, viewsets
 
 from rest_framework.exceptions import NotFound
@@ -6,13 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from product.models import (
-    Size, Product, Product_image
+    Size, Product, Product_Image
 )
 from .serializers import (
-    ProductSerializer, SizeSerializer, Product_imageSerializer
+    ProductSerializer, SizeSerializer, Product_ImageSerializer
 )
 from .renderers import (
-    SizeRenderer, ProductRenderer, Product_imageRenderer
+    SizeRenderer, ProductRenderer, Product_ImageRenderer
 )
 from core.permissions import (
     IsSystemAdmin, IsSiteAdmin, IsMasterVendor, IsGeneralVendor
@@ -170,7 +169,7 @@ class ProductViewSet(
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     
-class Product_imageViewSet(
+class Product_ImageViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
@@ -178,8 +177,8 @@ class Product_imageViewSet(
     viewsets.GenericViewSet
     ):
     
-    queryset = Product_image.objects.all()
-    serializer_class = Product_imageSerializer
+    queryset = Product_Image.objects.all()
+    serializer_class = Product_ImageSerializer
     permission_class = [
         IsAuthenticated,
         (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
@@ -211,4 +210,3 @@ class Product_imageViewSet(
         return queryset
     
     
-class

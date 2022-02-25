@@ -81,11 +81,11 @@ class ProductSerializer(serializers.ModelSerializer):
         for image_data in images_data.getlist('image'):
             cnt += 1
             if cnt == 1:
-                Product_image.objects.create(
+                Product_Image.objects.create(
                     product=product, image=image_data, is_main=True
                     )
             else:
-                Product_image.objects.create(product=product, image=image_data)
+                Product_Image.objects.create(product=product, image=image_data)
                 
         date = datetime.today().strftime('%Y%m%d')[2:].zfill(6)
         brand_pk = str(product.brand.pk).zfill(3)

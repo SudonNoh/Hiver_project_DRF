@@ -15,7 +15,6 @@
 <div>
     <h2><b>Project Description</b></h2>
     <pre>
-    - project term : 2022.01.01 ~ 2022.02.14
     </pre>
 </div>
 

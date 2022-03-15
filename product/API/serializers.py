@@ -44,6 +44,18 @@ class Product_ImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# Product, Size , Image, Color, Goods, Sale_goods
+# 1. Color에 대한 Serializer를 우선 생성한다.
+# 2. Product 만들 때 Color, Image 같이 만들어지도록 한다.
+# 
+
+
+
+
+
+
+
+
 # Product Serializer
 class ProductSerializer(serializers.ModelSerializer):
     brand = serializers.StringRelatedField(read_only=True)

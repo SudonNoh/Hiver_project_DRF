@@ -80,6 +80,3 @@ class Sale_Goods(TimestampedModel):
     goods = models.ManyToManyField(Goods)
     sale_price = models.IntegerField()
     is_active = models.BooleanField(default=True)
-    
-
-    

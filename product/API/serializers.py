@@ -6,7 +6,7 @@ from brand.API.serializers import (
     )
 
 from product.models import (
-    SubCategory, Category, Size, Product, Product_Image
+    SubCategory, Category, Size, Product, Product_Image, Product_Color
     )
 
 
@@ -46,21 +46,17 @@ class Product_ImageSerializer(serializers.ModelSerializer):
 
 # Product, Size , Image, Color, Goods, Sale_goods
 # 1. Color에 대한 Serializer를 우선 생성한다.
+class Product_ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product_Color
+        fields = '__all__'
+        
 # 2. Product 만들 때 Color, Image 같이 만들어지도록 한다.
-# 
-
-
-
-
-
-
-
-
-# Product Serializer
 class ProductSerializer(serializers.ModelSerializer):
     brand = serializers.StringRelatedField(read_only=True)
     product_number = serializers.CharField(max_length=128, read_only=True)
-    image = Product_ImageSerializer(many=True, read_only=True)
+    product_color = Product_ColorSerializer(many=True, read_only=True)
+    product_image = Product_ImageSerializer(many=True, read_only=True)
     subcategory = SubCategorySerializer(read_only=True)
     
     class Meta:
@@ -71,41 +67,67 @@ class ProductSerializer(serializers.ModelSerializer):
             'name',
             'subcategory',
             'product_color',
-            'product_number',
-            'image',
+            'product_image',
+            'product_number'
         ]
-            
+    
     def create(self, validated_data):
         
-        images_data = self.context['request'].FILES
-        brand = self.context.get('brand', None)
-        subcategory_pk = self.context.get('subcategory', None)
-        subcategory = SubCategory.objects.get(pk=subcategory_pk)
-
-        product = Product.objects.create(
-            brand = brand,
-            subcategory = subcategory,
-            **validated_data
-            )
         
-        # 첫번째 들어오는 image_data를 main으로 저장
-        cnt = 0
-        for image_data in images_data.getlist('image'):
-            cnt += 1
-            if cnt == 1:
-                Product_Image.objects.create(
-                    product=product, image=image_data, is_main=True
-                    )
-            else:
-                Product_Image.objects.create(product=product, image=image_data)
+    
+# 3. Goods Serializer
+# 4. Sale_goods Serializer
+
+
+
+# Product Serializer
+# class ProductSerializer(serializers.ModelSerializer):
+#     brand = serializers.StringRelatedField(read_only=True)
+#     product_number = serializers.CharField(max_length=128, read_only=True)
+#     image = Product_ImageSerializer(many=True, read_only=True)
+#     subcategory = SubCategorySerializer(read_only=True)
+    
+#     class Meta:
+#         model = Product
+#         fields = [
+#             'id',
+#             'brand',
+#             'name',
+#             'subcategory',
+#             'product_color',
+#             'product_number',
+#             'image',
+#         ]
+            
+#     def create(self, validated_data):
+        
+#         images_data = self.context['request'].FILES
+#         brand = self.context.get('brand', None)
+#         subcategory_pk = self.context.get('subcategory', None)
+#         subcategory = SubCategory.objects.get(pk=subcategory_pk)
+
+#         product = Product.objects.create(
+#             brand = brand,
+#             subcategory = subcategory,
+#             **validated_data
+#             )
+        
+#         # 첫번째 들어오는 image_data를 main으로 저장
+#         cnt = 0
+#         for image_data in images_data.getlist('image'):
+#             cnt += 1
+#             if cnt == 1:
+#                 Product_Image.objects.create(
+#                     product=product, image=image_data, is_main=True
+#                     )
+#             else:
+#                 Product_Image.objects.create(product=product, image=image_data)
                 
-        date = datetime.today().strftime('%Y%m%d')[2:].zfill(6)
-        brand_pk = str(product.brand.pk).zfill(3)
-        product_pk = str(product.pk).zfill(4)
+#         date = datetime.today().strftime('%Y%m%d')[2:].zfill(6)
+#         brand_pk = str(product.brand.pk).zfill(3)
+#         product_pk = str(product.pk).zfill(4)
 
-        product.product_number = date + brand_pk + product_pk
-        product.save()
+#         product.product_number = date + brand_pk + product_pk
+#         product.save()
         
-        return product
-    
-    
+#         return product

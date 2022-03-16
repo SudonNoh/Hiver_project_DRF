@@ -37,46 +37,34 @@ class SizeSerializer(serializers.ModelSerializer):
         return size
     
     
+
+# Color를 저장할 때 image를 같이 저장하도록 한다.
+# Product를 저장한 후 옵션인 Color와 Image를 저장
+# Main image는 Sales Goods에 저장
+class ProductSerializer(serializers.ModelSerializer):
+    brand = serializers.StringRelatedField(read_only=True)
+    # read_only 옵션이 필요한지 여부 확인
+    subcategory = SubCategorySerializer(read_only=True)
+    product_number = serializers.CharField(max_length=128, read_only=True)
+    
+    class Meta:
+        model = Product
+        fields = '__all__'
+    
+    
 # Product Image Serializer
 class Product_ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_Image
         fields = '__all__'
 
-
-# Product, Size , Image, Color, Goods, Sale_goods
-# 1. Color에 대한 Serializer를 우선 생성한다.
+# Product color Serializer
 class Product_ColorSerializer(serializers.ModelSerializer):
+    image = Product_ImageSerializer(many=True, read_only=True)
     class Meta:
         model = Product_Color
         fields = '__all__'
-        
-# 2. Product 만들 때 Color, Image 같이 만들어지도록 한다.
-class ProductSerializer(serializers.ModelSerializer):
-    brand = serializers.StringRelatedField(read_only=True)
-    product_number = serializers.CharField(max_length=128, read_only=True)
-    product_color = Product_ColorSerializer(many=True, read_only=True)
-    product_image = Product_ImageSerializer(many=True, read_only=True)
-    subcategory = SubCategorySerializer(read_only=True)
     
-    class Meta:
-        model = Product
-        fields = [
-            'id',
-            'brand',
-            'name',
-            'subcategory',
-            'product_color',
-            'product_image',
-            'product_number'
-        ]
-    
-    def create(self, validated_data):
-        
-        
-    
-# 3. Goods Serializer
-# 4. Sale_goods Serializer
 
 
 

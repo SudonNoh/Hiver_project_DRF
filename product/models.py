@@ -48,7 +48,6 @@ class Product_Color(models.Model):
 class Product_Image(models.Model):
     product_color = models.ForeignKey(Product_Color, on_delete=models.CASCADE, related_name='product_image')
     image = models.ImageField(default='media/default/Ryan.jpg', upload_to="product/image/%Y/%m/%d")
-    is_main = models.BooleanField(default=False)
 
 
 class Size(models.Model):

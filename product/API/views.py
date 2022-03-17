@@ -109,104 +109,104 @@ class SizeViewSet(
         return Response(None, status=status.HTTP_204_NO_CONTENT)
     
     
-class ProductViewSet(
-    viewsets.ModelViewSet
-    ):
+# class ProductViewSet(
+#     viewsets.ModelViewSet
+#     ):
     
-    queryset = Product.objects.all()
-    renderer_classes = (ProductRenderer,)
-    serializer_class = ProductSerializer
+#     queryset = Product.objects.all()
+#     renderer_classes = (ProductRenderer,)
+#     serializer_class = ProductSerializer
     
-    def get_queryset(self):
-        queryset = self.queryset.filter(brand=self.request.user.brand)
+#     def get_queryset(self):
+#         queryset = self.queryset.filter(brand=self.request.user.brand)
         
-        subcategory_text = self.request.query_params.get('subcategory', None)
-        if subcategory_text is not None:
-            queryset = queryset.filter(
-                subcategory__subcategory__icontains=subcategory_text
-                )
+#         subcategory_text = self.request.query_params.get('subcategory', None)
+#         if subcategory_text is not None:
+#             queryset = queryset.filter(
+#                 subcategory__subcategory__icontains=subcategory_text
+#                 )
         
-        category_text = self.request.query_params.get('category', None)
-        if category_text is not None:
-            queryset = queryset.filter(
-                subcategory__category__category__icontains=category_text
-                )
+#         category_text = self.request.query_params.get('category', None)
+#         if category_text is not None:
+#             queryset = queryset.filter(
+#                 subcategory__category__category__icontains=category_text
+#                 )
         
-        product_color_text = self.request.query_params.get('product_color', None)
-        if product_color_text is not None:
-            queryset = queryset.filter(
-                product_color__icontains=product_color_text
-            )
+#         product_color_text = self.request.query_params.get('product_color', None)
+#         if product_color_text is not None:
+#             queryset = queryset.filter(
+#                 product_color__icontains=product_color_text
+#             )
         
-        return  queryset
+#         return  queryset
     
-    def get_permissions(self):
-        if self.action == 'destroy':
-            permission_classes = [
-                IsAuthenticated, 
-                (IsSystemAdmin|IsSiteAdmin|IsMasterVendor),
-                ]
-        else:
-            permission_classes = [
-                IsAuthenticated,
-                (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
-                ]
-        return [permission() for permission in permission_classes]
+#     def get_permissions(self):
+#         if self.action == 'destroy':
+#             permission_classes = [
+#                 IsAuthenticated, 
+#                 (IsSystemAdmin|IsSiteAdmin|IsMasterVendor),
+#                 ]
+#         else:
+#             permission_classes = [
+#                 IsAuthenticated,
+#                 (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
+#                 ]
+#         return [permission() for permission in permission_classes]
     
-    def create(self, request):
-        serializer_context = {
-            'brand': request.user.brand,
-            'subcategory':request.data['subcategory'],
-            'request':request
-        }
-        serializer_data = request.data
-        serializer = self.serializer_class(
-            data = serializer_data, context=serializer_context
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+#     def create(self, request):
+#         serializer_context = {
+#             'brand': request.user.brand,
+#             'subcategory':request.data['subcategory'],
+#             'request':request
+#         }
+#         serializer_data = request.data
+#         serializer = self.serializer_class(
+#             data = serializer_data, context=serializer_context
+#         )
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
         
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     
-class Product_ImageViewSet(
-    mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet
-    ):
+# class Product_ImageViewSet(
+#     mixins.CreateModelMixin,
+#     mixins.UpdateModelMixin,
+#     mixins.DestroyModelMixin,
+#     mixins.ListModelMixin,
+#     viewsets.GenericViewSet
+#     ):
     
-    queryset = Product_Image.objects.all()
-    serializer_class = Product_ImageSerializer
-    permission_class = [
-        IsAuthenticated,
-        (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
-        ]
+#     queryset = Product_Image.objects.all()
+#     serializer_class = Product_ImageSerializer
+#     permission_class = [
+#         IsAuthenticated,
+#         (IsSystemAdmin|IsSiteAdmin|IsMasterVendor|IsGeneralVendor)
+#         ]
 
-    def get_queryset(self):
-        # subcategory_text = self.request.query_params.get('subcategory', None)
-        # if subcategory_text is not None:
-        #     queryset = queryset.filter(
-        #         subcategory__subcategory__icontains=subcategory_text
-        #         )
-        # User의 brand 명과 image.product.brand 명을 확인해서 queryset을 구성
-        # 만약 둘이 다른 경우 not allowed error 발생하도록 설정
-        queryset = self.queryset
+#     def get_queryset(self):
+#         # subcategory_text = self.request.query_params.get('subcategory', None)
+#         # if subcategory_text is not None:
+#         #     queryset = queryset.filter(
+#         #         subcategory__subcategory__icontains=subcategory_text
+#         #         )
+#         # User의 brand 명과 image.product.brand 명을 확인해서 queryset을 구성
+#         # 만약 둘이 다른 경우 not allowed error 발생하도록 설정
+#         queryset = self.queryset
         
-        if self.request.user.brand == 'Admin':
-            queryset = self.queryset
-        else:
-            # product 개별 image list 조회
-            product = self.request.query_params.get('product', None)
-            if product is not None:
-                queryset = queryset.filter(
-                    product__pk__contains=product
-                )
-            else:
-                # 해당 brand product의 모든 image list 조회
-                queryset = self.queryset.filter(product__brand=self.request.user.brand)
+#         if self.request.user.brand == 'Admin':
+#             queryset = self.queryset
+#         else:
+#             # product 개별 image list 조회
+#             product = self.request.query_params.get('product', None)
+#             if product is not None:
+#                 queryset = queryset.filter(
+#                     product__pk__contains=product
+#                 )
+#             else:
+#                 # 해당 brand product의 모든 image list 조회
+#                 queryset = self.queryset.filter(product__brand=self.request.user.brand)
         
-        return queryset
+#         return queryset
     
     

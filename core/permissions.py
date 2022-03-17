@@ -58,7 +58,6 @@ class IsMasterVendor(CustomPerm):
     def has_permission(self, request, view):
         return CustomPerm.propo(self, request, view, 'master_vendor')
 
-
     def has_object_permission(self, request, view, obj):
         return CustomPerm.propo(self, request, view, 'master_vendor')
         
